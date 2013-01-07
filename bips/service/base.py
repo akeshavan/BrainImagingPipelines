@@ -75,10 +75,15 @@ class BIPS(object):
 
     @expose
     def edit_config(self,uuid='7757e3168af611e1b9d5001e4fb1404c'):
-        conf = get_workflow(uuid).config_ui()
+        wf = get_workflow(uuid)
+        try:
+            view = wf.html_view()
+        except:
+            view = None
+        conf = wf.config_ui()
         with open(os.path.join(MEDIA_DIR, 'edit_config.html')) as fp:
             m = fp.readlines()
-            form = get_form(conf)
+            form = get_form(conf,view)
             
             msg = '\n'.join(m).replace('**TEMPLATE**',form)
         return msg

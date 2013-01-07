@@ -173,21 +173,23 @@ def create_view():
 mwf.config_view = create_view
 
 def create_html_view():
-    view = {'Description':[{'name':'uuid', 'style':'readonly'},
-                           {'name':'desc', 'style':'readonly'}],
-            'Directories':[{'name':'working_dir'},
+    import collections
+    view = collections.OrderedDict()
+    view['Description'] = [{'name':'uuid', 'style':'readonly'},
+                           {'name':'desc', 'style':'readonly'}]
+    view['Directories'] = [{'name':'working_dir'},
                            {'name':'sink_dir'},
                            {'name':'crash_dir'},
-                           {'name':'surf_dir'}],
-            'Execution Options':[{'name':'run_using_plugin'},
+                           {'name':'surf_dir'}]
+    view['Execution Options'] = [{'name':'run_using_plugin'},
                                  {'name':'plugin'},
                                  {'name':'plugin_args'},
-                                 {'name':'test_mode'}],                   
-            'Subjects':[{'name':'subjects'},
+                                 {'name':'test_mode'}]                 
+    view['Subjects'] = [{'name':'subjects'},
                          {'name':'base_dir'},
                          {'name':'func_template'},
                          {'name':'run_datagrabber_without_submitting'},
-                         {'name':'timepoints_to_remove'}]}
+                         {'name':'timepoints_to_remove'}]
     return view
     
 mwf.html_view = create_html_view
