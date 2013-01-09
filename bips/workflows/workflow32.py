@@ -173,6 +173,8 @@ Part 4: Workflow Construction
 def extract_contrasts(con_file):
     import numpy as np
     cons = np.genfromtxt(con_file,dtype=str)
+    if len(cons.shape)==1:
+        cons = [cons]
     contrasts = []
     for c in cons:
         contrasts.append((c[0],c[1],c[2].split(','),np.array(c[3].split(',')).astype(float).tolist()))
