@@ -1,71 +1,181 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
-    <meta charset='utf-8'>
+    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+    <title>Brain Imaging Pipelines by akeshavan</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <title>Brainimagingpipelines by akeshavan</title>
   </head>
-
   <body>
-    <div id="container">
-      <div class="inner">
+    <div class="wrapper">
+      <header>
+        <h1 class="header">Brain Imaging Pipelines</h1>
+        <p class="header">BIPs</p>
 
-        <header>
-          <h1>Brainimagingpipelines</h1>
-          <h2>BIPs</h2>
-        </header>
+        <ul>
+          <li class="download"><a class="buttons" href="https://github.com/akeshavan/BrainImagingPipelines/zipball/master">Download ZIP</a></li>
+          <li class="download"><a class="buttons" href="https://github.com/akeshavan/BrainImagingPipelines/tarball/master">Download TAR</a></li>
+          <li><a class="buttons github" href="https://github.com/akeshavan/BrainImagingPipelines">View On GitHub</a></li>
+        </ul>
 
-        <section id="downloads" class="clearfix">
-          <a href="https://github.com/akeshavan/BrainImagingPipelines/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
-          <a href="https://github.com/akeshavan/BrainImagingPipelines/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
-          <a href="https://github.com/akeshavan/BrainImagingPipelines" id="view-on-github" class="button"><span>View on GitHub</span></a>
-        </section>
+        <p class="header">This project is maintained by <a class="header name" href="https://github.com/akeshavan">akeshavan</a></p>
 
-        <hr>
 
-        <section id="main_content">
-          <h3>Welcome to GitHub Pages.</h3>
+      </header>
+      <section>
+        <h3>Welcome to Anisha's BIPs Tutorials</h3>
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
+<p>These tutorials will try to explain how to use the BIPS workflows I've written and how you can contribute to BIPs.</p>
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-</code></pre>
+<p>BIPS is a collection of <a href="http://nipy.sourceforge.net/nipype/">Nipype</a> workflows that can be customized for specific projects with little knowledge of python/programming. Ideally, we hope that BIPs users will learn some programming so they can debug problems and eventually contribute new workflows.</p>
 
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
+<p>The project-specific parameters for each BIPs workflow are saved in a .json file, which you can edit with a text editor of your choice. At the moment, BIPs comes with a user interface where you can edit your .json file. You can open the interface by:</p>
 
-<h3>Designer Templates</h3>
+<p><code>
+$bips -c &lt;first 2-3 id digits of workflow&gt;
+</code></p>
 
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
+<p>Where the id is a string of numbers and letters that point to your workflow. To see all workflow id's type:</p>
 
-<h3>Rather Drive Stick?</h3>
+<p><code>
+$bips -l
+</code></p>
 
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
+<p>When you run your workfow by typing </p>
 
-<h3>Authors and Contributors</h3>
+<p><code>
+$bips -r your_config_file.json
+</code></p>
 
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
+<p>A python script will save in the same location as your config file. This is the Nipype workflow configured for your project. You should save these scripts when you are done with a project, because BIPs workflows may change, but your script stays the same.</p>
 
-<h3>Support or Contact</h3>
+<h3>fMRI Task Analysis</h3>
 
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
-        </section>
+<p>A full fMRI task analysis (using SPM or FSL) can be done with BIPs the following workflows:</p>
 
-        <footer>
-          Brainimagingpipelines is maintained by <a href="https://github.com/akeshavan">akeshavan</a><br>
-          This page was generated by <a href="http://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="http://twitter.com/jasonlong">Jason Long</a>.
-        </footer>
+<ol>
+<li>Convert dicoms using <a href="">dcmstack</a> or workflow <strong>df4</strong> in BIPs</li>
+<li>Send your structural image to <a href="">recon-all</a>
+</li>
+<li>Manually correct your reconned images in freesurfer before moving on</li>
+<li>Normalize your freesurfer structural to a template using workflow <strong>21ab</strong>
+</li>
+<li>Preprocess your functional data:
 
-        
-      </div>
+<ul>
+<li>
+<strong>don't</strong> regress any nuisance variables</li>
+<li>don't bandpass filter if you are using SPM modeling (set highpass and lowpass freq to -1)</li>
+<li>if using SPM modeling, do not do scaling</li>
+</ul>
+</li>
+<li>First Level Modeling with <strong>8ef</strong> for FSL, <strong>02e</strong> for FSL with ev files already generated, <strong>a43</strong> for SPM</li>
+<li>If using FSL and you have more than 1 run, use workflow <strong>726</strong> for fixed effects</li>
+<li>Run segstats <strong>2c59</strong> for average contrast values in each individual freesurfer region (or any label file), group the segstats across subjects <strong>31a1</strong>, and run statistics using R (or whatever package you want)<br>
+</li>
+<li>Normalize your con images/copes&amp;varcopes using worklow <strong>3a2e</strong>
+</li>
+<li>Run second-level analyses:
+
+<ul>
+<li>
+<strong>f08</strong> for one sample T-test in FSL</li>
+<li>
+<strong>51ef</strong> for multiple regression in FSL</li>
+<li>
+<strong>2d12</strong> for one sample and/or regression in SPM</li>
+</ul>
+</li>
+</ol><p>For example configs are results see my results page for the <a href="http://web.mit.edu/keshavan/Public/novel">SAD Novelty Project</a></p>
+
+<h3>fMRI Resting State Analysis</h3>
+
+<p>A resting state analysis can be run on the surface or the volume. I have not written bips workflows for graph theory metrics yet, but there are toolboxes in python or matlab that can do this.</p>
+
+<ol>
+<li>Convert dicoms using <a href="">dcmstack</a> or workflow <strong>df4</strong> in BIPs</li>
+<li>Send your structural image to <a href="">recon-all</a>
+</li>
+<li>Manually correct your reconned images in freesurfer before moving on</li>
+<li>Normalize your freesurfer structural to a template using workflow <strong>21ab</strong>
+</li>
+<li>Preprocess your functional data:
+
+<ul>
+<li>
+<strong>do</strong> regress nuisance variables</li>
+<li>
+<strong>do</strong> detrend if using <a href="">CompCor</a>
+</li>
+</ul>
+</li>
+<li>Map resting timeseries to the surface and create correlation matrices using <strong>2b00</strong>
+</li>
+<li>View surface timeseries correlations using <strong>974</strong> using the interactive displays</li>
+<li>For a volume analysis, create ROIs (subject specific or in normalized space) and run workflow <strong>f5c</strong>. The outputs are: ROI to ROI (in a text file which you can run stats on), and ROI-to-voxel images, where you can run workflows <strong>f08</strong>, <strong>51ef</strong> for FSL, and <strong>2d12</strong> for SPM group level analysis.</li>
+</ol><h3>Using the Datagrabber</h3>
+
+<p>In order to understand how the datagrabber module works, first read the nipype documentation on the <a href="http://www.mit.edu/%7Esatra/nipype-nightly/users/grabbing_and_sinking.html">datagrabber node</a>. </p>
+
+<p>I'll try to explain it my own way:</p>
+
+<ul>
+<li>
+<p><strong>Fields</strong>: you can add or delete fields. Each field has <strong>values</strong>. Always keep the one with the name "subject_id"</p>
+
+<ul>
+<li>You can click the "iterable" box to run the workflow for each value in the field. This is usually clicked for the "subject_id" field, except for group level workflows</li>
+<li>Lets say you want to run a workflow for each run separately. Add a field with the name "run" and with values: 1,2,3,4,5. Click the iterable box.</li>
+</ul>
+</li>
+<li><p><strong>Base directory</strong>: The base directory for your data. This will be inserted before each field template</p></li>
+<li><p><strong>Field template</strong>: The pattern the datagrabber will match to find your files. To insert a <strong>value</strong> from a field, type '%s'. </p></li>
+<li><p><strong>Template args</strong>: Tells the datagrabber what to substitute the '%s' from the <strong>Field template</strong> </p></li>
+</ul><p>Lets say our <strong>Field template looked like this</strong>:</p>
+
+<p><code>
+{"functional_run":'%s/func_run_%s.nii'}
+</code></p>
+
+<p>Template args would be:</p>
+
+<p><code>
+{"functional_run":[['subject_id','run']]}
+</code></p>
+
+<p>Where subject_id and run are defined in <strong>Fields</strong> as "subject_01" and "1,2,3,4,5" respectively. The datagrabber will find:</p>
+
+<p><code>
+/base/directory/subject_01/func_run_1.nii
+/base/directory/subject_01/func_run_2.nii
+/base/directory/subject_01/func_run_3.nii
+/base/directory/subject_01/func_run_4.nii
+/base/directory/subject_01/func_run_5.nii
+</code></p>
+
+<p>If the iterable box is checked for both fields, the workflow will run 5 times. If there were 2 subjects, the workflow would run 10 times.</p>
+
+<h3>Contributing</h3>
+
+<p>Contributing to BIPs requires knowledge of git and nipype. </p>
+
+<p><a href="http://miykael.github.io/nipype-beginner-s-guide/">Good nipype tutorial</a>
+<a href="http://nbviewer.ipython.org/urls/github.com/fperez/reprosw/raw/master/Version%2520Control.ipynb">Git tutorial</a></p>
+
+<p>I will write more about this later.</p>
+      </section>
+      <footer>
+        <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+      </footer>
     </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+		
   </body>
 </html>
