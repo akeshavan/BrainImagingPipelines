@@ -1,36 +1,37 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
+
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Brain Imaging Pipelines by akeshavan</title>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Brain Imaging Pipelines : BIPs" />
 
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <script src="javascripts/scale.fix.js"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Brain Imaging Pipelines</title>
   </head>
+
   <body>
-    <div class="wrapper">
-      <header>
-        <h1 class="header">Brain Imaging Pipelines</h1>
-        <p class="header">BIPs</p>
 
-        <ul>
-          <li class="download"><a class="buttons" href="https://github.com/akeshavan/BrainImagingPipelines/zipball/master">Download ZIP</a></li>
-          <li class="download"><a class="buttons" href="https://github.com/akeshavan/BrainImagingPipelines/tarball/master">Download TAR</a></li>
-          <li><a class="buttons github" href="https://github.com/akeshavan/BrainImagingPipelines">View On GitHub</a></li>
-        </ul>
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/akeshavan/BrainImagingPipelines">View on GitHub</a>
 
-        <p class="header">This project is maintained by <a class="header name" href="https://github.com/akeshavan">akeshavan</a></p>
+          <h1 id="project_title">Brain Imaging Pipelines</h1>
+          <h2 id="project_tagline">BIPs</h2>
 
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/akeshavan/BrainImagingPipelines/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/akeshavan/BrainImagingPipelines/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
 
-      </header>
-      <section>
-        <h3>Welcome to Anisha's BIPs Tutorials</h3>
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>Welcome to Anisha's BIPs Tutorials</h1>
 
 <p>These tutorials will try to explain how to use the BIPS workflows I've written and how you can contribute to BIPs.</p>
 
@@ -56,7 +57,7 @@ $bips -r your_config_file.json
 
 <p>A python script will save in the same location as your config file. This is the Nipype workflow configured for your project. You should save these scripts when you are done with a project, because BIPs workflows may change, but your script stays the same.</p>
 
-<h3>fMRI Task Analysis</h3>
+<h1>fMRI Task Analysis</h1>
 
 <p>A full fMRI task analysis (using SPM or FSL) can be done with BIPs the following workflows:</p>
 
@@ -95,7 +96,7 @@ $bips -r your_config_file.json
 </li>
 </ol><p>For example configs are results see my results page for the <a href="http://web.mit.edu/keshavan/Public/novel">SAD Novelty Project</a></p>
 
-<h3>fMRI Resting State Analysis</h3>
+<h1>fMRI Resting State Analysis</h1>
 
 <p>A resting state analysis can be run on the surface or the volume. I have not written bips workflows for graph theory metrics yet, but there are toolboxes in python or matlab that can do this.</p>
 
@@ -120,7 +121,7 @@ $bips -r your_config_file.json
 </li>
 <li>View surface timeseries correlations using <strong>974</strong> using the interactive displays</li>
 <li>For a volume analysis, create ROIs (subject specific or in normalized space) and run workflow <strong>f5c</strong>. The outputs are: ROI to ROI (in a text file which you can run stats on), and ROI-to-voxel images, where you can run workflows <strong>f08</strong>, <strong>51ef</strong> for FSL, and <strong>2d12</strong> for SPM group level analysis.</li>
-</ol><h3>Using the Datagrabber</h3>
+</ol><h1>Using the Datagrabber</h1>
 
 <p>In order to understand how the datagrabber module works, first read the nipype documentation on the <a href="http://www.mit.edu/%7Esatra/nipype-nightly/users/grabbing_and_sinking.html">datagrabber node</a>. </p>
 
@@ -162,20 +163,78 @@ $bips -r your_config_file.json
 
 <p>If the iterable box is checked for both fields, the workflow will run 5 times. If there were 2 subjects, the workflow would run 10 times.</p>
 
-<h3>Contributing</h3>
+<h1>Contributing</h1>
 
 <p>Contributing to BIPs requires knowledge of git and nipype. </p>
 
-<p><a href="http://miykael.github.io/nipype-beginner-s-guide/">Good nipype tutorial</a>
-<a href="http://nbviewer.ipython.org/urls/github.com/fperez/reprosw/raw/master/Version%2520Control.ipynb">Git tutorial</a></p>
+<p><a href="http://miykael.github.io/nipype-beginner-s-guide/">Good nipype tutorial</a></p>
 
-<p>I will write more about this later.</p>
+<p><a href="http://nbviewer.ipython.org/urls/github.com/fperez/reprosw/raw/master/Version%2520Control.ipynb">Git tutorial</a></p>
+
+<h2>Editing and testing</h2>
+
+<p><strong>Fork</strong> the bips repository, <strong>clone</strong> it to your computer, make a <strong>branch</strong> to edit the code. Make sure the setup.py in each folder points to your new directory (if you made one) and each new directory you add as an <code>__init__.py</code> file. Each time you make a change, <strong>install</strong> your changes locally by typing </p>
+
+<p><code>
+python setup.py install --prefix ~
+</code></p>
+
+<p>To test your changes, make sure your environment variables are set correctly:</p>
+
+<div class="highlight"><pre><span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span>~/bin:<span class="nv">$PATH</span>
+<span class="nb">export </span><span class="nv">PYTHONPATH</span><span class="o">=</span>~/lib/python2.7/site-packages
+</pre></div>
+
+<p>And then test your code in ipython or by typing <code>bips -c &lt;uuid&gt;</code></p>
+
+<p>Finally, <strong>Push</strong> your branch up to your repository online, and send a <strong>Pull Request</strong> to my repository or the INCF repository.</p>
+
+<h2>Getting a uuid</h2>
+
+<p>To get a unique id for your workflow, in ipython type:</p>
+
+<div class="highlight"><pre><span class="kn">import</span> <span class="nn">uuid</span>
+<span class="n">uuid</span><span class="o">.</span><span class="n">uuid1</span><span class="p">()</span><span class="o">.</span><span class="n">hex</span>
+</pre></div>
+
+<h2>Useful debugging things</h2>
+
+<h3>Debugging function nodes</h3>
+
+<p>1.Go to the working directory of the function node</p>
+
+<p>2.In ipython type</p>
+
+<div class="highlight"><pre><span class="kn">from</span> <span class="nn">nipype.utils.filemanip</span> <span class="kn">import</span> <span class="n">loadpkl</span>
+<span class="n">inputs</span> <span class="o">=</span> <span class="n">loadpkl</span><span class="p">(</span><span class="s">"_inputs.pklz"</span><span class="p">)</span>
+<span class="n">inputs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">"function_str"</span><span class="p">)</span>
+<span class="n">inputs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">"ignore_exception"</span><span class="p">)</span>
+</pre></div>
+
+<p>3.Import your function from bips:</p>
+
+<div class="highlight"><pre><span class="kn">from</span> <span class="nn">bips.workflows.whatever.wherever.yourworkflow</span> <span class="kn">import</span> <span class="n">yourfunction</span>
+</pre></div>
+
+<p>4.Turn on debugger and run function</p>
+
+<div class="highlight"><pre><span class="n">pdb</span>
+<span class="n">yourfunction</span><span class="p">(</span><span class="o">**</span><span class="n">inputs</span><span class="p">)</span>
+</pre></div>
+
+<p>5.The debugger will stop inside your function, and you can hopefully figure out where things go wrong. Good luck!</p>
       </section>
-      <footer>
-        <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Brain Imaging Pipelines maintained by <a href="https://github.com/akeshavan">akeshavan</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
       </footer>
     </div>
-    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
-		
+
+    
+
   </body>
 </html>
