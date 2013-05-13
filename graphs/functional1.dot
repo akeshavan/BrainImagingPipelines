@@ -1,0 +1,19 @@
+digraph G
+{
+    node [style="filled" fillcolor="lightblue" color="lightblue" fontname = "helvetica"];
+    graph [fontname = "helvetica"];
+Dicoms[label="DICOMS",fillcolor="plum1",color="plum1"]
+Functional[label="Functional Runs (Nifti)",fillcolor="plum1",color="plum1"]
+Dicoms ->Functional
+remove[label="Remove first n timepoints"]
+float[label="Convert datatype to float"]
+despike[label="De-spike intensity flashes from scanner"]
+Fieldmap[label="Fieldmaps (Nifti)",fillcolor="plum1",color="plum1"]
+Dicoms -> Fieldmap
+Functional->remove
+remove->float
+float->despike
+fm[label="Fieldmap correction"]
+despike->fm
+Fieldmap -> fm
+}

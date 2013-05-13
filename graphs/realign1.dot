@@ -1,0 +1,18 @@
+digraph G
+{
+    node [style="filled" fillcolor="lightblue" color="lightblue" fontname = "helvetica"];
+    graph [fontname = "helvetica"];
+
+nipy[label="Simultaneous slice-time & motion correction"]
+
+
+
+art[label="Artifact Detection (0.5mm)"]
+Mean[label="Mean Image (without outlier scans)"]
+
+
+nipy->art
+art->Mean
+
+
+}

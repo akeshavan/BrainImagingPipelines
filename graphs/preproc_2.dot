@@ -1,0 +1,8 @@
+digraph G {
+
+Functional -> Realignment -> Mean
+Structural -> Coregistration
+Mean -> Coregistration
+Realignment -> Smoothing
+Smoothing -> Filtering
+}

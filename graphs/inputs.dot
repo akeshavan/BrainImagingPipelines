@@ -1,0 +1,20 @@
+digraph G
+{
+    node [style="filled" fillcolor="lightblue" color="lightblue" fontname = "helvetica"];
+    graph [fontname = "helvetica"];
+Functional[label="Functional Runs",fillcolor="plum1",color="plum1"]
+Structural[label="Structural Image",fillcolor="plum1",color="plum1"]
+   Realignment
+   Coregistration
+   Mask[label="Create a Brain Mask"]
+   Smoothing
+   Filtering
+      
+   Functional -> Realignment
+   Structural -> Coregistration
+   Realignment -> Coregistration
+   Structural -> Mask
+   Realignment -> Smoothing
+   Smoothing -> Filtering
+   
+}

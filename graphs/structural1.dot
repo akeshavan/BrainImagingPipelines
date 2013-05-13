@@ -1,0 +1,17 @@
+digraph G
+{
+    node [style="filled" fillcolor="lightblue" color="lightblue" fontname = "helvetica"];
+    graph [fontname = "helvetica"];
+
+Structural[label="Structural Image",fillcolor="plum1",color="plum1"]
+Recon[label="Recon-all"]
+Apply[label="Apply Transform"]
+aparc[label="Threshold aparc+aseg.mgz"]
+Coregistration[label="Coregistration with BB Register"]   
+Recon -> Coregistration
+aparc -> Apply
+Apply -> Dilate
+Structural -> Recon
+Recon -> aparc
+Coregistration -> Apply
+}

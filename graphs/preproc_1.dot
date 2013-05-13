@@ -1,0 +1,11 @@
+digraph G
+{
+    node [style="filled" fillcolor="lightblue" color="lightblue" fontname = "helvetica"];
+    graph [fontname = "helvetica"];
+   Realignment
+   Coregistration
+   Mask[label="Create a Brain Mask"]
+   Smoothing
+   Filtering
+   
+}

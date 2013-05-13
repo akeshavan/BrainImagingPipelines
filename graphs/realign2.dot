@@ -1,0 +1,23 @@
+digraph G
+{
+    node [style="filled" fillcolor="lightblue" color="lightblue" fontname = "helvetica"];
+    graph [fontname = "helvetica"];
+
+
+
+sl[label="Slice Timing"]
+mot[label="Motion Correction"]
+
+   
+art1[label="Artifact Detection (0.5mm)"]
+Mean1[label="Mean Image (without outlier scans)"]   
+
+
+
+
+sl->mot
+mot->art1
+art1->Mean1
+
+
+}

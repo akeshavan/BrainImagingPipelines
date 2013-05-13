@@ -1,0 +1,10 @@
+digraph G {
+	graph [fontname=helvetica];
+	node [label="\N", style=filled, fillcolor=lightblue, color=lightblue, fontname=helvetica];
+	graph [bb="0,0,747,36"];
+	Realignment [pos="65,18", width="1.8091", height="0.5"];
+	Coregistration [pos="219,18", width="1.9743", height="0.5"];
+	Mask [label="Create a Brain Mask", pos="407,18", width="2.7508", height="0.5"];
+	Smoothing [pos="581,18", width="1.5862", height="0.5"];
+	Filtering [pos="702,18", width="1.2553", height="0.5"];
+}
