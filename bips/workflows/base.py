@@ -216,6 +216,10 @@ class ConfigUI(HasTraits):
         save_json(filename=path,data=d)
         self.saved = True
 
+def create_bips_config_no_view(workflow,name):
+    save_config(workflow.config_ui(),name+".json")
+    print "new config file", name+".json", "created"
+
 def create_bips_config(workflow):
     from pyface.api import confirm, YES
     from traitsui.api import Handler, View, Item, UItem, HGroup, VGroup
