@@ -6,6 +6,7 @@ def configuration(parent_package='',top_path=None):
 
     # List all packages to be loaded here
     config.add_subpackage('gablab')
+    config.add_subpackage('nelsonlab')
 
     # List all data directories to be loaded here
     return config
