@@ -1,10 +1,7 @@
 # flexible datagrabber workflow
-print "importing traits"
 from traits.api import HasTraits, Directory, Bool, Button
 import traits.api as traits
-print "imported os"
 import os
-print "checking for display var"
 """try:
     os.environ["DISPLAY"]
     print "importing view"
@@ -162,7 +159,6 @@ class Data(HasTraits):
         dg = self.create_dataflow()
         dg.run()
 
-print "got flexible datagrabber"
 
 if __name__ == "__main__":    
     a = Data(['func','struct'])
