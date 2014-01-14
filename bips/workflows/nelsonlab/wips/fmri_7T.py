@@ -298,7 +298,7 @@ def simple_preproc(c):
     else:
         motion_correct.inputs.sliceorder = c.SliceOrder
         motion_correct.inputs.tr = c.TR
-        bandpass_filter.inputs.tr = c.tr
+        bandpass_filter.inputs.tr = c.TR
 
     # inputs
     motion_correct.inputs.do_slicetime = c.do_slicetiming
