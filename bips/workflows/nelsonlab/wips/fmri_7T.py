@@ -256,7 +256,7 @@ def simple_preproc(c):
     wf.connect(remove_noise,"out_file",smooth,"inputnode.in_files")
     #fmri bet for masks!
 
-    bet = pe.MapNode(fsl.BET(mask=True),name="bet")
+    bet = pe.Node(fsl.BET(mask=True),name="bet")
     wf.connect(meanfunc,"outputspec.mean_image",bet,"in_file")
     wf.connect(bet,"mask_file",smooth,"inputnode.mask_file")
 
