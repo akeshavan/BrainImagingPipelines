@@ -238,8 +238,8 @@ def simple_preproc(c):
                                        'art_outliers','global_signal'])
     wf.connect(motion_correct,"par_file",addoutliers,"motion_params")
     wf.connect(art,"norm_files",addoutliers,"composite_norm")
-    wf.connect(compcor,"outputspec.noise_components",addoutliers,"compcor_components")
-    wf.connect(compcor,"outputspec.noise_components",addoutliers,"global_signal") #this is a dummy
+    wf.connect(compcor,"noise_components",addoutliers,"compcor_components")
+    wf.connect(compcor,"noise_components",addoutliers,"global_signal") #this is a dummy
     wf.connect(art,"outlier_files",addoutliers,"art_outliers")
     addoutliers.inputs.demean=True
     addoutliers.inputs.selector = [True,True,True,False,True,True]
