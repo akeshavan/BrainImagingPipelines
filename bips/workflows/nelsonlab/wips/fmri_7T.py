@@ -253,7 +253,6 @@ def simple_preproc(c):
 
 
     wf.connect(tsnr,"detrended_file",remove_noise,"in_file")
-    wf.connect(remove_noise,"out_file",smooth,"inputnode.in_files")
     #fmri bet for masks!
 
     bet = pe.Node(fsl.BET(mask=True),name="bet")
