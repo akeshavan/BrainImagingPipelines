@@ -1,10 +1,10 @@
 import json
 import os
-
 from nipype.utils.filemanip import save_json
 from nipype.interfaces.base import traits
 from traits.api import (HasTraits, HasStrictTraits, Str, Bool, Button, TraitError)
 from .flexible_datagrabber import Data
+
 _workflow = {}
 
 def _decode_list(data):
