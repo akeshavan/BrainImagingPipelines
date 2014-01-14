@@ -1,8 +1,8 @@
 __author__ = 'keshavan'
-from ..base import MetaWorkflow, load_config, register_workflow
+from ...base import MetaWorkflow, load_config, register_workflow
 from traits.api import HasTraits, Directory, Bool
 import traits.api as traits
-from ..flexible_datagrabber import Data, DataBase
+from ...flexible_datagrabber import Data, DataBase
 """
 Part 1: Define a MetaWorkflow
 """
@@ -12,7 +12,8 @@ desc = """
 =============================
 
 This preprocessing just realigns and calculates the mean. 
-It also regresses motion, norm, derivatives. and t compcor
+It also regresses motion, norm, derivatives. and t compcor.
+Also mod smooth. And filter.
 
 """
 mwf = MetaWorkflow()
@@ -57,6 +58,8 @@ class config(HasTraits):
     #between_loops = traits.Either("None",traits.List([5]),usedefault=True)
     speedup = traits.List([5],traits.Int(5),usedefault=True)
     # Advanced Options
+    smooth_type = traits.Enum("susan","isotropic")
+    fwhm = traits.Float(5.0,desc="fwhm")
     use_advanced_options = traits.Bool()
     advanced_script = traits.Code()
 
@@ -133,14 +136,17 @@ def get_substitutions(subject_id):
     return subs
 
 def simple_preproc(c):
-    from .fmri_preprocessing import extract_meta
+    from ...gablab.wips.fmri.preprocessing.fmri_preprocessing import extract_meta
     import nipype.pipeline.engine as pe
     import nipype.interfaces.utility as util
-    from ...scripts.modular_nodes import mod_realign
-    from ...scripts.utils import art_mean_workflow
+    from ...gablab.wips.scripts.modular_nodes import mod_realign, mod_regressor, mod_filter
+    from ...gablab.wips.scripts.utils import art_mean_workflow, \
+        choose_susan, extract_noise_components
     from nipype.algorithms.misc import TSNR
     import nipype.interfaces.io as nio
     import nipype.interfaces.fsl as fsl
+    from ...gablab.wips.scripts.modular_nodes import create_mod_smooth
+    from ...gablab.wips.scripts.base import create_filter_matrix
 
     wf = pe.Workflow(name='simple_preproc')
     datagrabber = c.datagrabber.create_dataflow()
@@ -163,14 +169,137 @@ def simple_preproc(c):
         name='tsnr',
         iterfield=['in_file'])
 
+    # additional information for the noise prin comps
+    getthresh = pe.MapNode(interface=fsl.ImageStats(op_string='-p 98'),
+                            name='getthreshold',
+                            iterfield=['in_file'])
+
+    # and a bit more...
+    threshold_stddev = pe.MapNode(fsl.Threshold(),
+                                  name='threshold',
+                                  iterfield=['in_file', 'thresh'])
+
+    compcor = pe.MapNode(util.Function(input_names=['realigned_file',
+                                                    'noise_mask_file',
+                                                    'num_components',
+                                                    'csf_mask_file',
+                                                    'realignment_parameters',
+                                                    'outlier_file',
+                                                    'selector',
+                                                    'regress_before_PCA'],
+                                       output_names=['noise_components','pre_svd'],
+                                       function=extract_noise_components),
+                                       name='compcor_components',
+                                       iterfield=['realigned_file',
+                                                  'noise_mask_file',
+                                                  'realignment_parameters',
+                                                  'outlier_file'])
+
+    compcor.inputs.selector = [True,False] # no A compcor, always T compcor
+    compcor.inputs.num_components = 6
+    compcor.inputs.regress_before_PCA = False
+
+    wf.connect(tsnr, 'stddev_file',
+                     threshold_stddev, 'in_file')
+
+    wf.connect(tsnr, 'stddev_file',
+                     getthresh, 'in_file')
+
+    wf.connect(getthresh, 'out_stat',
+                     threshold_stddev, 'thresh')
+
+    wf.connect(threshold_stddev, 'out_file',
+                     compcor, 'noise_mask_file')
+
+
+    smooth = create_mod_smooth(name="modular_smooth",
+                                 separate_masks=True)
+
+
+    smooth.inputs.inputspec.smooth_type = c.smooth_type
+    smooth.inputs.inputspec.reg_file = ''
+    smooth.inputs.inputspec.surface_fwhm =0
+    smooth.inputs.inputspec.surf_dir = ""
+    smooth.inputs.fwhm = c.fwhm
+
+
+    addoutliers = pe.MapNode(util.Function(input_names=['motion_params',
+                                                     'composite_norm',
+                                                     "compcorr_components","global_signal",
+                                                     "art_outliers",
+                                                     "selector",
+                                                     "demean"],
+                                        output_names=['filter_file'],
+                                        function=create_filter_matrix),
+                          name='create_nuisance_filter',
+                          iterfield=['motion_params',
+                                       'composite_norm',
+                                       'compcorr_components',
+                                       'art_outliers','global_signal'])
+    wf.connect(motion_correct,"par_file",addoutliers,"motion_params")
+    wf.connect(art,"norm_files",addoutliers,"composite_norm")
+    wf.connect(compcor,"outputspec.noise_components",addoutliers,"compcor_components")
+    wf.connect(compcor,"outputspec.noise_components",addoutliers,"global_signal") #this is a dummy
+    wf.connect(art,"outlier_files",addoutliers,"art_outliers")
+    addoutliers.inputs.demean=True
+    addoutliers.inputs.selector = [True,True,True,False,True,True]
+
+    remove_noise = pe.MapNode(util.Function(input_names=["in_file","design_file","mask"],
+        output_names=["out_file"],function=mod_regressor),
+        name='regress_nuisance',iterfield=["in_file","design_file"])
+
+    wf.connect(addoutliers, 'filter_file',
+               remove_noise, 'design_file')
+
+
+    wf.connect(tsnr,"detrended_file",remove_noise,"in_file")
+    wf.connect(remove_noise,"out_file",smooth,"in_files")
+    #fmri bet for masks!
+
+    bet = pe.MapNode(fsl.BET(mask=True),name="bet")
+    wf.connect(meanfunc,"outputspec.mean_image",bet,"in_file")
+    wf.connect(bet,"mask_file",smooth,"inputspec.mask_file")
+
+    choosesusan = pe.Node(util.Function(input_names=['fwhm',
+                                                       'motion_files',
+                                                       'smoothed_files'],
+                                        output_names=['cor_smoothed_files'],
+                                        function=choose_susan),
+                          name='select_smooth')
+
+    wf.connect(smooth,"outputspec.smoothed_files",choosesusan,"smoothed_files")
+    wf.connect(tsnr,"detrended_file",choosesusan,"motion_files")
+    choosesusan.inputs.fwhm = c.fwhm
+    wf.connect(bet,"mask_file",remove_noise,"mask")
+    wf.connect(remove_noise,"out_file",smooth,"inputspec.in_files")
+
+
+    bandpass_filter = pe.MapNode(util.Function(input_names=['in_file',
+                                                            'algorithm',
+                                                            'lowpass_freq',
+                                                            'highpass_freq',
+                                                            'tr'],
+                                output_names=['out_file'],
+                                function=mod_filter),
+                      name='bandpass_filter',iterfield=['in_file'])
+
+    wf.connect(choosesusan,"cor_smoothed_files",bandpass_filter,"in_file")
+    bandpass_filter.inputs.algorithm = "fsl"
+    bandpass_filter.inputs.lowpass_freq = 0.1
+    bandpass_filter.inputs.highpass_freq = 0.01
+
+
+
     if c.use_metadata:
         get_meta = pe.Node(util.Function(input_names=['func'],output_names=['so','tr'],function=extract_meta),name="get_metadata")
         wf.connect(datagrabber,'datagrabber.epi',get_meta, 'func')
         wf.connect(get_meta,'so',motion_correct,"sliceorder")
         wf.connect(get_meta,'tr',motion_correct,"tr")
+        wf.connect(get_meta,"tr",bandpass_filter,"tr")
     else:
         motion_correct.inputs.sliceorder = c.SliceOrder
         motion_correct.inputs.tr = c.TR
+        bandpass_filter.inputs.tr = c.tr
 
     # inputs
     motion_correct.inputs.do_slicetime = c.do_slicetiming
@@ -187,21 +316,26 @@ def simple_preproc(c):
 
     wf.connect(motion_correct,'out_file',tsnr,'in_file')
 
+
     sink = pe.Node(nio.DataSink(),name='sinker')
     sink.inputs.base_directory = c.sink_dir
     wf.connect(infosource,'subject_id',sink,'container')
     wf.connect(infosource,('subject_id', get_substitutions),sink,'substitutions')
-    wf.connect(motion_correct,'out_file',sink,'simple_preproc.output')
     wf.connect(motion_correct,'par_file',sink,'simple_preproc.motion')
-    wf.connect(meanfunc,'outputspec.mean_image',sink,'simple_preproc.mean')
+    wf.connect(bet,'out_file',sink,'simple_preproc.mean')
     wf.connect(tsnr,'tsnr_file',sink,'simple_preproc.tsnr.@tsnr')
-    wf.connect(tsnr,'detrended_file',sink,'simple_preproc.tsnr.@detrended')
+    #wf.connect(tsnr,'detrended_file',sink,'simple_preproc.tsnr.@detrended')
     wf.connect(tsnr,'stddev_file',sink,'simple_preproc.tsnr.@stddev')
     wf.connect(tsnr,'mean_file',sink,'simple_preproc.tsnr.@mean')
     wf.connect(art,'intensity_files',sink,'simple_preproc.art.@intensity')
     wf.connect(art,'norm_files',sink,'simple_preproc.art.@norm')
     wf.connect(art,'outlier_files',sink,'simple_preproc.art.@outlier')
     wf.connect(art,'statistic_files',sink,'simple_preproc.art.@stats')
+    wf.connect(threshold_stddev, 'out_file', sink, 'simple_preproc.tsnr.noise_mask')
+    wf.connect(addoutliers,"filter_file",sink,"simple_preproc.reg") # these are everything that was regressed.
+    wf.connect(bet,"mask_file",sink,"simple_preproc.mask")
+    wf.connect(bandpass_filter,"out_file",sink,"simple_preproc.output.bandpassed")
+    wf.connect(choosesusan,"cor_smoothed_files",sink,"simple_preproc.output.fullspectrum")
 
     return wf
 
@@ -220,7 +354,7 @@ def main(config_file):
 
     from nipype.utils.filemanip import fname_presuffix
 
-    a.export(fname_presuffix(config_file,'','_script_').replace('.json',''))
+    a.export(fname_presuffix(config_file,'','_script.py').replace('.json',''))
 
     if c.save_script_only:
         return 0
