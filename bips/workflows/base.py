@@ -1,11 +1,27 @@
 import json
 import os
 
-from nipype.utils.filemanip import save_json
+#from nipype.utils.filemanip import save_json
 from nipype.interfaces.base import traits
 from traits.api import (HasTraits, HasStrictTraits, Str, Bool, Button, TraitError)
 from .flexible_datagrabber import Data
 _workflow = {}
+
+def save_json(filename, data):
+    """Save data to a json file
+
+    Parameters
+    ----------
+    filename : str
+        Filename to save data in.
+    data : dict
+        Dictionary to save in json file.
+
+    """
+
+    fp = file(filename, 'w')
+    json.dump(data, fp, sort_keys=True, indent=4)
+    fp.close()
 
 def _decode_list(data):
     rv = []
