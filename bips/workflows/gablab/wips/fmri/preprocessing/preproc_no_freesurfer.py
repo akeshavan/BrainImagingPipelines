@@ -352,7 +352,7 @@ config_file : JSON file with configuration parameters
 """
     c = load_config(config_file, create_config)
     preprocess = prep_workflow(c)
-    preprocess.config = {'execution': {'crashdump_dir': c.crash_dir, 'job_finished_timeout' : 14}}
+    preprocess.config = {'execution': {'crashdump_dir': c.crash_dir, 'job_finished_timeout' : 30}}
 
     if len(c.subjects) == 1:
         preprocess.write_graph(graph2use='exec',

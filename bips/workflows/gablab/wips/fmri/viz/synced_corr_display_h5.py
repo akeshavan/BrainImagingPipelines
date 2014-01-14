@@ -6,7 +6,6 @@
 import os
 import scipy.io as sio
 import numpy as np
-from tables import openFile
 from .....base import MetaWorkflow, load_config, register_workflow
 
 """
@@ -100,6 +99,7 @@ def picker_callback(picker_object):
 def display_matrices(filenames, target, hemi, surface):
     from mayavi import mlab
     from surfer import Brain
+    from tables import openFile
     print '\n'.join(filenames)
     for name in filenames:
         try:

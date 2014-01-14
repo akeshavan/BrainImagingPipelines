@@ -1,16 +1,19 @@
 # flexible datagrabber workflow
+print "importing traits"
 from traits.api import HasTraits, Directory, Bool, Button
 import traits.api as traits
-
+print "imported os"
 import os
-try:
+print "checking for display var"
+"""try:
     os.environ["DISPLAY"]
+    print "importing view"
     from traitsui.api import View
     use_view = True
 except:
     use_view = False
-
-import os
+"""
+use_view = False
 
 def get_view():
     from traitsui.api import View, Item, Group
@@ -158,6 +161,8 @@ class Data(HasTraits):
     def _check_fired(self):
         dg = self.create_dataflow()
         dg.run()
+
+print "got flexible datagrabber"
 
 if __name__ == "__main__":    
     a = Data(['func','struct'])

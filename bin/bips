@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/data/bioe5/keshavan/env/Canopy_64bit/User/bin/python
 """Meta routine to configure and run various brain imaging workflows
 
 Example
