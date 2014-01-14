@@ -267,7 +267,7 @@ def simple_preproc(c):
                                         function=choose_susan),
                           name='select_smooth')
 
-    wf.connect(smooth,"outputsnode.smoothed_files",choosesusan,"smoothed_files")
+    wf.connect(smooth,"outputnode.smoothed_files",choosesusan,"smoothed_files")
     wf.connect(tsnr,"detrended_file",choosesusan,"motion_files")
     choosesusan.inputs.fwhm = c.fwhm
     wf.connect(bet,"mask_file",remove_noise,"mask")
