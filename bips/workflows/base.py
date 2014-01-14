@@ -217,8 +217,9 @@ class ConfigUI(HasTraits):
         self.saved = True
 
 
-def create_bips_config_no_view(workflow,name):
-    save_config(workflow.config_ui(),name+".json")
+def create_bips_config_no_view(uuid,name):
+    wf = get_workflow(uuid)
+    save_config(wf.config_ui(),name+".json")
     print "new config file", name+".json", "created"
 
 
