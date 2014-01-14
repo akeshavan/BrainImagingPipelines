@@ -216,11 +216,11 @@ def simple_preproc(c):
                                  separate_masks=True)
 
 
-    smooth.inputs.inputspec.smooth_type = c.smooth_type
-    smooth.inputs.inputspec.reg_file = ''
-    smooth.inputs.inputspec.surface_fwhm =0
-    smooth.inputs.inputspec.surf_dir = ""
-    smooth.inputs.fwhm = c.fwhm
+    smooth.inputs.inputnode.smooth_type = c.smooth_type
+    smooth.inputs.inputnode.reg_file = ''
+    smooth.inputs.inputnode.surface_fwhm =0
+    smooth.inputs.inputnode.surf_dir = ""
+    smooth.inputs.inputnode.fwhm = c.fwhm
 
 
     addoutliers = pe.MapNode(util.Function(input_names=['motion_params',
@@ -253,12 +253,12 @@ def simple_preproc(c):
 
 
     wf.connect(tsnr,"detrended_file",remove_noise,"in_file")
-    wf.connect(remove_noise,"out_file",smooth,"in_files")
+    wf.connect(remove_noise,"out_file",smooth,"inputnode.in_files")
     #fmri bet for masks!
 
     bet = pe.MapNode(fsl.BET(mask=True),name="bet")
     wf.connect(meanfunc,"outputspec.mean_image",bet,"in_file")
-    wf.connect(bet,"mask_file",smooth,"inputspec.mask_file")
+    wf.connect(bet,"mask_file",smooth,"inputnode.mask_file")
 
     choosesusan = pe.Node(util.Function(input_names=['fwhm',
                                                        'motion_files',
@@ -267,11 +267,11 @@ def simple_preproc(c):
                                         function=choose_susan),
                           name='select_smooth')
 
-    wf.connect(smooth,"outputspec.smoothed_files",choosesusan,"smoothed_files")
+    wf.connect(smooth,"outputsnode.smoothed_files",choosesusan,"smoothed_files")
     wf.connect(tsnr,"detrended_file",choosesusan,"motion_files")
     choosesusan.inputs.fwhm = c.fwhm
     wf.connect(bet,"mask_file",remove_noise,"mask")
-    wf.connect(remove_noise,"out_file",smooth,"inputspec.in_files")
+    wf.connect(remove_noise,"out_file",smooth,"inputnode.in_files")
 
 
     bandpass_filter = pe.MapNode(util.Function(input_names=['in_file',
