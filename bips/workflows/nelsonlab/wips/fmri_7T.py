@@ -198,6 +198,7 @@ def simple_preproc(c):
     compcor.inputs.selector = [True,False] # no A compcor, always T compcor
     compcor.inputs.num_components = 6
     compcor.inputs.regress_before_PCA = False
+    compcor.inputs.csf_mask_file = None #will this work?
 
     wf.connect(tsnr, 'stddev_file',
                      threshold_stddev, 'in_file')
