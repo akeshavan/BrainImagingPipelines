@@ -134,7 +134,7 @@ def get_substitutions(subject_id):
         subs.append(('_threshold%d/'%i, '%s_r%02d_'%(subject_id, i)))
         subs.append(("_create_nuisance_filter%d/"%i,'%s_r%02d_'%(subject_id, i)))
         subs.append(("_bandpass_filter%d/"%i,'%s_r%02d_'%(subject_id, i)))
-        subs.append(("_applymask0/"%i,'%s_r%02d_'%(subject_id, i)))
+        subs.append(("_applymask%d/"%i,'%s_r%02d_'%(subject_id, i)))
 
     return subs
 
