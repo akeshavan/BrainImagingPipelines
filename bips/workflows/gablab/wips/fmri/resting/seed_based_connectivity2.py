@@ -154,7 +154,7 @@ def roi2roi(roifiles,roinames,subject):
     corrmat = np.corrcoef(data)
     nt = data.shape[1]
     print corrmat.shape
-    zmat =  np.sqrt(nt-3)*0.5*np.log(np.divide((np.ones(corrmat.shape)+corrmat),(np.ones(corrmat.shape)-corrmat)))
+    zmat =  0.5*np.log(np.divide((np.ones(corrmat.shape)+corrmat),(np.ones(corrmat.shape)-corrmat)))
 
     z_outfile = os.path.abspath("z_%s_roi2roi.csv"%subject)
     out = open(z_outfile,'w')
@@ -199,7 +199,7 @@ def create_correlation_matrix(infiles,mask_file, roi, roiname):
     for i in xrange(masked_data.shape[0]):
         r = np.corrcoef(masked_data[i,:],roi_data)[0][1]
         masked_rmat[i] = r
-        masked_zmat[i] = np.sqrt(data.shape[-1]-3)*0.5*np.log((1+r)/(1-r))
+        masked_zmat[i] = 0.5*np.log((1+r)/(1-r))
 
     zmat[mask==1] = masked_zmat
     rmat[mask==1] = masked_rmat
