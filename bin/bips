@@ -37,8 +37,8 @@ def main(args):
         display_workflow_info(args.info)
 
     if args.config:
-        #configure_workflow(args.config)
-        create_bips_config_no_view(args.config,args.name)
+        configure_workflow(args.config)
+        #create_bips_config_no_view(args.config,args.name)
 
     if args.run:
         run_workflow(args.run)

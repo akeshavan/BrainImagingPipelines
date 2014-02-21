@@ -2,15 +2,14 @@
 from traits.api import HasTraits, Directory, Bool, Button
 import traits.api as traits
 import os
-"""try:
+try:
     os.environ["DISPLAY"]
-    print "importing view"
     from traitsui.api import View
     use_view = True
 except:
     use_view = False
-"""
-use_view = False
+
+#use_view = False
 
 def get_view():
     from traitsui.api import View, Item, Group
